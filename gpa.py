@@ -9,14 +9,14 @@ def load_data():
             print(f"Đã đọc dữ liệu từ {FILE_NAME}")
             return data
     except FileNotFoundError:
-        print("File không tồn tại, trả về danh sách rỗng")
-        return []
+        print(f"File {FILE_NAME} không tồn tại, trả về danh sách rỗng")
+        return {"students": []}
     except json.JSONDecodeError:
         print("File JSON bị lỗi format, trả về danh sách rỗng")
-        return []
+        return {"students": []}
     except Exception as error:
         print("Lỗi khi đọc file JSON:", error)
-        return []
+        return {"students": []}
 
 def save_data(data):
     try:
@@ -29,12 +29,62 @@ def save_data(data):
 
 # Calculate Scores
 def calc_subject_score(midterm, final):
-    return midterm * 0.4 + final * 0.6
+    return round(midterm * 0.4 + final * 0.6, 1)
+
+# Add student
+def add_student():
+    student_id = input("Nhập MSSV: ")
+    student_name = input("Nhập họ tên: ")
+    subjects = [] 
+
+    while True:
+        subject_id = input("Nhập mã môn học (Enter để dừng): ")
+        if subject_id == "":
+            break
+        subject_name = input("Nhập tên môn học: ")
+
+        try:
+            sotc = int(input("Nhập số tín chỉ: "))
+            midterm = float(input("Điểm GK (40%): "))
+            final = float(input("Điểm CK (60%): "))
+
+            subjects.append({
+                "id": subject_id,
+                "name": subject_name,
+                "sotc": sotc,
+                "midterm": round(midterm, 1),
+                "final": round(final, 1),
+            })
+
+        except ValueError:
+            print("Điểm bắt buộc phải là số! Hãy thử lại!")
+
+    return {
+        "id": student_id,
+        "name": student_name,
+        "subjects": subjects,
+    }
 
 # Demo
 if __name__ == "__main__":
     data = load_data()
 
-    print(json.dumps(data, indent=2, ensure_ascii=False))
+    while True:
+        print("\n===== MENU =====")
+        print("1. Thêm sinh viên")
+        print("2. Xem danh sách sinh viên")
+        print("3. Lưu & Thoát")
+        choice = input("Chọn: ")
 
-    save_data(data)
+        if choice == "1":
+            new_student = add_student()
+            data["students"].append(new_student)
+        elif choice == "2":
+            print("\n===== Danh sach sinh vien =====")
+            for student in data["students"]:
+                print(f"MSSV: {student["id"]} - Name: {student["name"]}")
+        elif choice == "3":
+            save_data(data)
+            break
+        else:
+            print("Lựa chọn không hợp lệ!")
