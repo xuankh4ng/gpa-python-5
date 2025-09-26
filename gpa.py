@@ -80,13 +80,13 @@ if __name__ == "__main__":
             new_student = add_student()
             data["students"].append(new_student)
         elif choice == "2":
-    print("\n===== Danh sach sinh vien =====")
-    for student in data["students"]:
-        print(f"MSSV: {student['id']} - Name: {student['name']}")
-        for subj in student["subjects"]:
-            score = calc_subject_score(subj["midterm"], subj["final"])
-            print(f"   {subj['id']} - {subj['name']} | TC: {subj['sotc']} "
-                  f"| GK: {subj['midterm']} | CK: {subj['final']} | Điểm TB: {score}")
+            print("\n===== Danh sach sinh vien =====")
+            for student in data["students"]:
+                print(f"MSSV: {student['id']} - Name: {student['name']}")
+                for subj in student["subjects"]:
+                    score = calc_subject_score(subj["midterm"], subj["final"])
+                    print(f"   {subj['id']} - {subj['name']} | TC: {subj['sotc']} "
+                    f"| GK: {subj['midterm']} | CK: {subj['final']} | Điểm TB: {score}")
         elif choice == "3":
             save_data(data)
             break
