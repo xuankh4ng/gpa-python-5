@@ -82,7 +82,11 @@ if __name__ == "__main__":
         elif choice == "2":
             print("\n===== Danh sach sinh vien =====")
             for student in data["students"]:
-                print(f"MSSV: {student["id"]} - Name: {student["name"]}")
+                print(f"MSSV: {student['id']} - Name: {student['name']}")
+                for subj in student["subjects"]:
+    score = calc_subject_score(subj["midterm"], subj["final"])
+    print(f"   {subj['id']} - {subj['name']} | TC: {subj['sotc']} "
+          f"| GK: {subj['midterm']} | CK: {subj['final']} | Điểm TB: {score}")
         elif choice == "3":
             save_data(data)
             break
